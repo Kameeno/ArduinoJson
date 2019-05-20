@@ -15,7 +15,11 @@ class SpyingAllocator {
 
   void* allocate(size_t n) {
     _log << "A" << n;
+#ifdef BOARD_HAS_PSRAM
+    return ps_malloc(n);
+#else
     return malloc(n);
+#endif
   }
   void deallocate(void* p) {
     _log << "F";

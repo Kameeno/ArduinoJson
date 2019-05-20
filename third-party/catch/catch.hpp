@@ -3370,8 +3370,12 @@ namespace Catch {
     inline size_t registerTestMethods() {
         size_t noTestMethods = 0;
         int noClasses = objc_getClassList( CATCH_NULL, 0 );
-
-        Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);
+#ifdef DBOARD_HAS_PSRAM
+  Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)ps_malloc( sizeof(Class) * noClasses);
+#else
+   Class* classes = (CATCH_UNSAFE_UNRETAINED Class *)malloc( sizeof(Class) * noClasses);
+#endif
+       
         objc_getClassList( classes, noClasses );
 
         for( int c = 0; c < noClasses; c++ ) {

@@ -12,7 +12,11 @@ namespace ARDUINOJSON_NAMESPACE {
 
 struct DefaultAllocator {
   void* allocate(size_t n) {
+#ifdef DBOARD_HAS_PSRAM
+    return ps_malloc(n);
+#else
     return malloc(n);
+#endif
   }
 
   void deallocate(void* p) {
